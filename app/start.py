@@ -5,7 +5,8 @@ import time
 
 close_requested = False
 
-def on_close():
+def on_close(signum, frame):
+    print("I'm done.")
     close_requested = True
 
 def job():
