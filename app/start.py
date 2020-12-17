@@ -20,17 +20,18 @@ def main():
     signal.signal(signal.SIGTERM, on_close)
 
     try:
-        mtime = os.path.getmtime('requirements.inst')
+        mtime = os.path.getmtime('/tempvol/requirements.inst')
     except:
         mtime = 0
 
     if mtime < os.path.getmtime('requirements.txt'):
         # Install requirements.
         subprocess.run(['pip', 'install', '-r', 'requirements.txt'])
-        subprocess.run(['touch', 'requirements.inst'])
+        subprocess.run(['touch', '/tempvol/requirements.inst'])
 
     import schedule
-    schedule.every(3).seconds.do(job)
+    schedule.every(30).minutes.do(job)
+    print("I'm started.")
     while not close_requested:
         schedule.run_pending()
         time.sleep(1)
