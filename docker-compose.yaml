@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  app:
+    image: python:3.8.6-slim
+    command: python -u start.py
+    volumes:
+      - ${APP_HOME}:/app
+      - ${APP_DATA}:/data
+    working_dir: /app
