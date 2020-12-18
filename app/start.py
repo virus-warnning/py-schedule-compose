@@ -30,7 +30,7 @@ def main():
         subprocess.run(['touch', '/tempvol/requirements.inst'])
 
     import schedule
-    schedule.every(30).minutes.do(job)
+    schedule.every().hour.at(':13').do(job)
     print("I'm started.")
     while not close_requested:
         schedule.run_pending()
