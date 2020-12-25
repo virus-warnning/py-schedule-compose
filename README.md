@@ -34,9 +34,9 @@ There are two default jobs in the project:
 * good_job(): run per 3 seconds.
 * bad_job(): run per 10 seconds and throw an unhandled exception.
 
-TODO: (screenshot)
+### Screenshot
 
-TODO: decorators
+![screenshot](https://imgur.com/effu4di)
 
 ### Remove container
 ```
@@ -48,12 +48,12 @@ docker-compose down -v
 
 ## Make your own job
 
-### Add a job
+### Add a job.
 
-### Add a job which using 3rd party package
+### Add a job which using 3rd party package.
 
-### Add a job to generate some data
+### Add a job to generate some data.
 
-### Set Telegram bot
+### Set Telegram bot to received unexpected exception.
 
-### Set timezone
+### Set timezone.
