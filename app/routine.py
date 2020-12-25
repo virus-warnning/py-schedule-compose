@@ -1,4 +1,5 @@
 import logging
+import os
 import threading
 
 import schedule
@@ -20,6 +21,11 @@ def handle_unexpected(func):
             logger.error('Job "%s()" throws an unexpected exception.', func.__name__)
             logger.error('  * Type: %s', type(ex).__name__)
             logger.error('  * Message: %s', str(ex))
+            bot = os.getenv('TG_BOT')
+            to = os.getenv('TG_TO')
+            if bot != '' and to != '':
+                # TODO: send telegram message
+                pass
     return wrapper
 
 # Run a job in parallel.

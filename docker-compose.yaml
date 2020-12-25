@@ -6,6 +6,8 @@ services:
     command: python -u start.py
     environment:
       TZ: Asia/Taipei
+      TG_BOT: ${TG_BOT}
+      TG_TO: ${TG_TO}
     volumes:
       - ${APP_HOME}:/app
       - ${APP_DATA}:/data
