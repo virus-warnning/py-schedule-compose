@@ -2,6 +2,8 @@
 
 A better way to implement Python [schedule](https://schedule.readthedocs.io/en/stable/) module.
 
+I'd just like to run several spiders on my NAS, so create this repository to test.
+
 ## Features
 
 * Handle unexpected exceptions.
