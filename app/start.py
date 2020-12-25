@@ -1,50 +1,55 @@
 import datetime
+import logging
 import os
 import signal
 import subprocess
-import threading
 import time
 
-close_requested = False
-
-def on_close(signum, frame):
-    print("I'm done.")
-    close_requested = True
-
-def parallel(func):
-    def pre_hook(*argv):
-        t = threading.Thread(target=func)
-        t.start()
-    return pre_hook
-
-@parallel
-def job():
-    isotime = datetime.datetime.now().strftime('%H:%M:%S')
-    print("{} | I'm working.".format(isotime))
+logging.basicConfig(format='%(asctime)s | %(name)7s | %(message)s', datefmt='%H:%M:%S')
+logger = logging.getLogger('Core')
+logger.setLevel(logging.INFO)
 
 def main():
     # Validate process id.
     if os.getpid() != 1:
-        print('This script must be run as root process.')
-        print('  pid: ', os.getpid())
-    signal.signal(signal.SIGTERM, on_close)
+        logger.error('This script must be run as root process (pid=1).')
+        logger.error('  pid: %d', os.getpid())
+        return
 
+    # Run pip install when:
+    # * First execution
+    # * requirement.txt modified
+    #
+    # !!! Modules schedule & routine must be imported after this section.
     try:
         mtime = os.path.getmtime('/tempvol/requirements.inst')
     except:
         mtime = 0
-
     if mtime < os.path.getmtime('requirements.txt'):
-        # Install requirements.
+        logger.info('pip install -r requirements.txt')
         subprocess.run(['pip', 'install', '-r', 'requirements.txt'])
         subprocess.run(['touch', '/tempvol/requirements.inst'])
 
+    # Handle ```docker-compose down```
+    def on_close(signum, frame):
+        # !!! Local variable would be assigned without the following definition.
+        nonlocal close_requested 
+        logger.info("Received `docker-compose down`.")
+        close_requested = True
+    close_requested = False
+    signal.signal(signal.SIGTERM, on_close)
+
+    # Setup jobs.
+    import routine
+    routine.assign()
+
+    # Run scheduled jobs.
+    logger.info("Scheduler started.")
     import schedule
-    schedule.every(10).seconds.do(job)
-    print("I'm started.")
     while not close_requested:
-        schedule.run_pending()
+        retval = schedule.run_pending()
         time.sleep(1)
+    logger.info("Scheduler stopped.")
 
 if __name__ == '__main__':
     main()
