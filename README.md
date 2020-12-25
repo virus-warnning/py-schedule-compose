@@ -23,7 +23,6 @@ cp .env.default .env
 ### Run container.
 
 ```
-# Create and run
 docker-compose up -d
 ```
 
@@ -36,15 +35,19 @@ There are two default jobs in the project:
 
 ### Screenshot
 
+The following screenshot is captured from Synology DS218+.
+
 <img src="docs/nas-screenshot.jpg" width="50%">
 
 ### Remove container
+
 ```
-# Remove container
-# -v is required, so that the volume for temp file would be removed also.
-# Without -v option, pip install would not run next time. 
 docker-compose down -v
 ```
+
+Option -v is required, so that the volume for temp file would be removed also.
+
+Without -v, pip install won't be run next time. 
 
 ## Make your own job
 
