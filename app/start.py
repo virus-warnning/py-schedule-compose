@@ -1,6 +1,8 @@
+import datetime
 import os
 import signal
 import subprocess
+import threading
 import time
 
 close_requested = False
@@ -9,8 +11,16 @@ def on_close(signum, frame):
     print("I'm done.")
     close_requested = True
 
+def parallel(func):
+    def pre_hook(*argv):
+        t = threading.Thread(target=func)
+        t.start()
+    return pre_hook
+
+@parallel
 def job():
-    print("I'm working.")
+    isotime = datetime.datetime.now().strftime('%H:%M:%S')
+    print("{} | I'm working.".format(isotime))
 
 def main():
     # Validate process id.
@@ -30,7 +40,7 @@ def main():
         subprocess.run(['touch', '/tempvol/requirements.inst'])
 
     import schedule
-    schedule.every().hour.at(':13').do(job)
+    schedule.every(10).seconds.do(job)
     print("I'm started.")
     while not close_requested:
         schedule.run_pending()
