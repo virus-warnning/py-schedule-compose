@@ -36,7 +36,7 @@ There are two default jobs in the project:
 
 ### Screenshot
 
-![screenshot](https://imgur.com/effu4di)
+<img src="docs/nas-screenshot.jpg" width="50%">
 
 ### Remove container
 ```
