@@ -4,6 +4,8 @@ services:
   app:
     image: python:3.8.6-slim
     command: python -u start.py
+    environment:
+      TZ: Asia/Taipei
     volumes:
       - ${APP_HOME}:/app
       - ${APP_DATA}:/data
