@@ -71,14 +71,14 @@ Without -v, pip install won't be run next time.
 
 #### Set Telegram bot to received unexpected exception.
 
-There are two environment variables in .env file.
+Edit these variables in .env file.
 
 ```ini
 TG_BOT={{YOUR BOT APIKEY}}
 TG_TO={{YOUR ACCOUNT or GROUP}}
 ```
 
-Container must be rebuilt after edit them.
+And rebuild container.
 
 ```
 docker-compose down -v
@@ -91,6 +91,15 @@ It the two variables are set, a telegram message would be sent while unexpected 
 
 #### Set timezone.
 
-```python
-# TODO
+Edit TIMEZONE variable in .env file.
+
+```ini
+TIMEZONE=Asia/Taipei
+```
+
+And rebuild container.
+
+```
+docker-compose down -v
+docker-compose up -d
 ```
