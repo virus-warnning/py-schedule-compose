@@ -2,6 +2,7 @@ import logging
 import os
 import threading
 
+import requests
 import schedule
 
 logger = logging.getLogger('Routine')
@@ -21,11 +22,33 @@ def handle_unexpected(func):
             logger.error('Job "%s()" throws an unexpected exception.', func.__name__)
             logger.error('  * Type: %s', type(ex).__name__)
             logger.error('  * Message: %s', str(ex))
+
             bot = os.getenv('TG_BOT')
             to = os.getenv('TG_TO')
-            if bot != '' and to != '':
-                # TODO: send telegram message
-                pass
+            if bot == '' or to == '':
+                return
+
+            # TODO:
+            # * message in markdown format
+            # * handle network exception
+            # * seperate it as a new function
+            message = 'Job "%s()" throws an unexpected exception.\n' % func.__name__
+            message += '  * Type: %s\n' % type(ex).__name__
+            message += '  * Message: %s' % str(ex)
+            api = 'https://api.telegram.org/bot{}/sendMessage'.format(bot)
+            params = {
+                'chat_id': to,
+                'text': message,
+                # 'parse_mode': 'markdown'
+            }
+            resp = requests.post(api, data=params)
+            if resp.headers['Content-Type'] != 'application/json':
+                return
+
+            result = resp.json()
+            if result['ok'] == False:
+                logger.error('Cannot send telegram message.')
+
     return wrapper
 
 # Run a job in parallel.

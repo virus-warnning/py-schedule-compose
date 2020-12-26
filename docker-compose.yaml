@@ -5,7 +5,7 @@ services:
     image: python:3.8.6-slim
     command: python -u start.py
     environment:
-      TZ: Asia/Taipei
+      TZ: ${TIMEZONE}
       TG_BOT: ${TG_BOT}
       TG_TO: ${TG_TO}
     volumes:
