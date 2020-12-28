@@ -39,6 +39,10 @@ def main():
     close_requested = False
     signal.signal(signal.SIGTERM, on_close)
 
+    # Load .env
+    from dotenv import load_dotenv
+    load_dotenv(verbose=True)
+
     # Setup jobs.
     import routine
     routine.assign()
